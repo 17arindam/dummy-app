@@ -3,6 +3,7 @@ import 'package:dummy_meals_app/modal/recipe_modal.dart';
 import 'package:dummy_meals_app/widget/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dummy_meals_app/screens/cart_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -13,19 +14,26 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipe App',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+        title: Text('Recipe App', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
+            },
+            icon: Icon(Icons.shopping_cart),
+          ),
+        ],
         backgroundColor: Colors.orange,
-        
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.orangeAccent, Colors.yellowAccent],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight),
+            colors: [Colors.orangeAccent, Colors.yellowAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
         child: BlocBuilder<MealsBloc, MealsState>(
-          
           builder: (context, state) {
             if (state is MealsInitial || state is MealsUpdated) {
               final recipes = state.recipes;
@@ -41,7 +49,8 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           _showAddRecipeModal(context);
         },
