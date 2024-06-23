@@ -65,7 +65,7 @@ class _RecipeCardState extends State<RecipeCard> {
                     setState(() {
                       quantity--;
                     });
-                    _updateQuantity(context);
+                    
                   }
                 },
               ),
@@ -79,7 +79,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   setState(() {
                     quantity++;
                   });
-                  _updateQuantity(context);
+                  
                 },
               ),
             ],
@@ -107,6 +107,7 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   void _updateQuantity(BuildContext context) {
+    print(widget.recipe.name+quantity.toString());
     context.read<CartBloc>().add(UpdateCartItem(CartItem(recipe: widget.recipe,quantity: quantity)));
   }
 }
