@@ -3,4 +3,5 @@ class Recipe{
   final String name;
   final String imgurl;
   
+  
 }
