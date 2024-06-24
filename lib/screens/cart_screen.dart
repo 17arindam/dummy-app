@@ -9,11 +9,14 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Cart',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.orange,
       ),
       body: Container(
-        decoration:const BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.orangeAccent, Colors.yellowAccent],
             begin: Alignment.topLeft,
@@ -34,9 +37,48 @@ class CartScreen extends StatelessWidget {
                     itemCount: state.cartItems.length,
                     itemBuilder: (context, index) {
                       final cartItem = state.cartItems[index];
+
                       return ListTile(
-                        title: Text(cartItem.recipe.name),
-                        trailing: Text(cartItem.quantity.toString()),
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(cartItem.recipe.imgurl),
+                        ),
+                        title: Text(
+                          cartItem.recipe.name,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                if (cartItem.quantity > 0)
+                                  // Decrement quantity logic
+                                  context.read<CartBloc>().add(
+                                        UpdateCartItem(
+                                          cartItem.copyWith(
+                                            quantity: cartItem.quantity - 1,
+                                          ),
+                                        ),
+                                      );
+                              },
+                            ),
+                            Text(cartItem.quantity.toString(),style: TextStyle(fontSize: 15),),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                // Increment quantity logic
+                                context.read<CartBloc>().add(
+                                      UpdateCartItem(
+                                        cartItem.copyWith(
+                                          quantity: cartItem.quantity + 1,
+                                        ),
+                                      ),
+                                    );
+                              },
+                            ),
+                          ],
+                        ),
                       );
                     },
                   );
@@ -45,12 +87,14 @@ class CartScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                
                 Navigator.pop(context);
               },
-              child: Text('Proceed to Checkout',style: TextStyle(fontWeight: FontWeight.bold),),
+              child: Text(
+                'Proceed to Checkout',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-            SizedBox(height: 20), 
+            SizedBox(height: 20),
           ],
         ),
       ),
